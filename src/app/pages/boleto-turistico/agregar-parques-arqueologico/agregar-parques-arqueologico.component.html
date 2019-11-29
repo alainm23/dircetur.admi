@@ -1,0 +1,56 @@
+<form [formGroup]="form">
+    <div class="row">
+      <div class="col" [nbSpinner]="is_loading" nbSpinnerStatus="primary">
+        <nb-card>
+          <nb-card-header>Parque arqueologico detalle</nb-card-header>
+          <nb-card-body>
+            <label for="imagen" class="label">Imagen:</label>
+            <div class="form-group">
+              <input type="file" nbInput id="imagen" accept="image/*" (change)="changeListener($event)" />
+            </div>  
+    
+            <img *ngIf="image != ''" class="img" [src]="image">
+  
+            <div class="form-group">
+              <label for="titulo" class="label">Titulo:</label>
+              <input type="text" formControlName="titulo" id="titulo" nbInput fullWidth>
+            </div>
+            
+            <div class="form-group">
+              <label for="boleto" class="label">Boleto turistico:</label>
+              <select class="select-css"
+                formControlName="boleto" 
+                fullWidth 
+                id="boleto"
+                [compareWith]="compareWith">
+                <option *ngFor="let item of items" [ngValue]="item">
+                  {{ item.titulo }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="detalle" class="label">Detalle:</label>
+              <textarea formControlName="detalle" rows="5" nbInput fullWidth shape="rectangle" id="detalle"></textarea>
+            </div>
+          </nb-card-body>
+        </nb-card>
+  
+        <div class="form-group" *ngIf="is_loading === true && has_image === true">
+          <label for="progress" class="label">Subiendo al servividor...</label>
+          <nb-progress-bar [value]="uploadPercent" id="progress"></nb-progress-bar>
+        </div>
+  
+        <div class="row">
+          <div class="col-6">
+            <button nbButton fullWidth status="danger">Cancelar</button>
+          </div>
+    
+          <div class="col-6">
+            <button nbButton fullWidth status="primary" [disabled]="!form.valid" (click)="submit ()">Crear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  

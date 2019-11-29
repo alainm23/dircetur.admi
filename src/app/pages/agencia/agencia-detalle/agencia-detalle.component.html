@@ -1,0 +1,221 @@
+<div class="row" [nbSpinner]="is_loading" nbSpinnerStatus="primary">
+    <div class="col-lg-6">
+      <form [formGroup]="form">
+        <nb-card>
+          <nb-card-header>Agregar nueva agencia de viajes y turismo</nb-card-header>
+          <nb-card-body>
+            <div class="form-group">
+              <label for="nombre_comercial" class="label">Nombre comercial:</label>
+              <input type="text" formControlName="nombre_comercial" id="nombre_comercial" nbInput fullWidth placeholder="Nombre comercial">
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="razon_social" class="label">Razón social:</label>
+                  <input formControlName="razon_social" type="text" nbInput fullWidth id="razon_social" placeholder="Razón social">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="ruc" class="label">RUC:</label>
+                  <input type="text" formControlName="ruc" nbInput fullWidth id="ruc" placeholder="RUC">
+                </div>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="direccion" class="label">Dirección:</label>
+                  <input type="text" formControlName="direccion" nbInput fullWidth id="direccion" placeholder="Dirección">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="telefono" class="label">Teléfono:</label>
+                  <input type="text" formControlName="telefono" nbInput fullWidth id="telefono" placeholder="Teléfono">
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="paginaweb" class="label">Página web:</label>
+              <input type="text" formControlName="pagina_web" id="paginaweb" nbInput fullWidth placeholder="Número certificado">
+            </div>
+  
+            <div class="form-group">
+              <label for="numerocertificado" class="label">Número certificado:</label>
+              <input type="text" formControlName="numero_certificado" id="numerocertificado" nbInput fullWidth placeholder="Número certificado">
+            </div>
+  
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="fechainspeccion" class="label">Fecha última inspección:</label>
+                  <input nbInput 
+                    formControlName="fecha_ins"
+                    fullWidth
+                    placeholder="Fecha última inspección"
+                    id="fechainspeccion"
+                    [nbDatepicker]="fechainspeccion">
+                  <nb-datepicker #fechainspeccion></nb-datepicker>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="fechaexpedicion" class="label">Fecha expedición:</label>
+                  <input nbInput fullWidth
+                    formControlName="fecha_exp"
+                    placeholder="Fecha última inspección"
+                    id="fechaexpedicion"
+                    [nbDatepicker]="fechaexpedicion">
+                  <nb-datepicker #fechaexpedicion></nb-datepicker>
+                </div>
+              </div>
+  
+            </div>
+  
+            <div class="form-group">
+              <label for="clasificacion" class="label">Clasificación:</label>
+              <select class="select-css" fullWidth formControlName="clasificacion" id="clasificacion" [compareWith]="compareWith">
+                <option *ngFor="let item of tipo_clasificaciones" [value]="item">
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="tipo" class="label">Tipo de turismo:</label>
+              <div class="demo-items" id="tipo">
+                <div *ngFor="let item of tipos_turismo">
+                  <nb-checkbox [checked]="item.checked" (checkedChange)="checkedChanged (item)">
+                    {{ item.nombre }}
+                  </nb-checkbox>
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="provincia" class="label">Provincia:</label>
+              <select class="select-css"
+                formControlName="provincia" 
+                (ngModelChange)="provinciaChanged ($event)"
+                fullWidth 
+                id="provincia"
+                [compareWith]="compareWith">
+                <option *ngFor="let item of provincias" [ngValue]="item">
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="distrito" class="label">Distrito:</label>
+              <select class="select-css" fullWidth formControlName="distrito" id="distritos" [compareWith]="compareWith">
+                <option *ngFor="let item of distritos" [ngValue]="item">
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="complementarios" class="label">Servicios complementarios:</label>
+              <textarea formControlName="servicios_complementarios" rows="5" nbInput fullWidth shape="rectangle" id="complementarios" placeholder="Servicios complementarios"></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label for="observaciones" class="label">Observaciones:</label>
+              <textarea formControlName="observaciones" rows="5" nbInput fullWidth shape="rectangle" id="observaciones" placeholder="Observaciones"></textarea>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </form>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>
+          <div class="row">
+            <div class="col-9">
+              Representante Legal
+            </div>
+    
+            <div class="col-3">
+              <button nbButton size="tiny" (click)="agregarRepresentante ()">Agregar</button>
+            </div>
+          </div>
+        </nb-card-header>
+      </nb-card>
+      
+      <nb-card *ngFor="let r of representates">
+        <nb-card-body>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="rnombrecompleto" class="label">Nombre completo</label>
+                <input type="text" id="rnombrecompleto" nbInput fullWidth placeholder="" [(ngModel)]="r.nombre">
+              </div>
+            </div>
+  
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="remail" class="label">Correo electronico:</label>
+                <input type="text" id="remail" nbInput fullWidth placeholder="" [(ngModel)]="r.correo">
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="rtdocumento" class="label">Tipo de documento:</label>
+  
+                <nb-select id="rtdocumento" [(ngModel)]="r.tdoc" fullWidth>
+                  <nb-option value="DNI">DNI</nb-option>
+                  <nb-option value="CE">C.E.</nb-option>
+                </nb-select>
+              </div>
+            </div>
+  
+            
+  
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="rndocumento" class="label">Numero de documento</label>
+                <input type="text" id="rndocumento" nbInput fullWidth placeholder="" [(ngModel)]="r.ndoc">
+              </div>
+            </div>
+          </div>
+  
+          <div class="row"> 
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="rdireccion" class="label">Dirección:</label>
+                <input type="text" id="rdireccion" nbInput fullWidth placeholder="" [(ngModel)]="r.direccion">
+              </div>
+            </div>
+  
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="rtcelular" class="label">Telefono celular:</label>
+                <input type="text" id="rtcelular" nbInput fullWidth placeholder="" [(ngModel)]="r.telefono">
+              </div>
+            </div>
+          </div>
+  
+          <button nbButton size="small" status="danger"  (click)="eliminarRepresentante (r)">Eliminar</button>
+        </nb-card-body>
+      </nb-card>
+  
+      <div class="row">
+        <div class="col-6">
+          <button nbButton fullWidth status="danger">Cancelar</button>
+        </div>
+  
+        <div class="col-6">
+          <button nbButton fullWidth status="primary" [disabled]="!form.valid" (click)="submit ()">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>  

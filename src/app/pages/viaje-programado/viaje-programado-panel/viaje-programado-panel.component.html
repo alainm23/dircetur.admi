@@ -1,0 +1,145 @@
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card [nbSpinner]="is_loading" nbSpinnerStatus="primary">
+    <nb-card-header>Crear salida: {{ item_selected.nombre }}</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="fecha_salida" class="label">Fecha y hora:</label>
+          <input type="datetime-local" formControlName="fecha_salida" id="fecha_salida" nbInput fullWidth>
+        </div>
+
+        <div class="form-group">
+          <label for="fecha_limite" class="label">Fecha limite de inscripcion:</label>
+          <input type="datetime-local" formControlName="fecha_limite" id="fecha_limite" nbInput fullWidth>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="cupos" class="label">Cupos:</label>
+              <input type="number" formControlName="cupos" id="cupos" nbInput fullWidth>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="precio" class="label">Precio (S/.):</label>
+              <input type="number" formControlName="precio" id="precio" nbInput fullWidth>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo_registro" class="label">Tipo registro:</label>
+          <nb-select formControlName="tipo_registro" fullWidth>
+            <nb-option value="0">Manual</nb-option>
+            <nb-option value="1">Presencial</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="cerrar_dialog (ref)">Cancelar</button>
+      &nbsp;
+      <button nbButton (click)="crear_salida (ref)" [disabled]="!form.valid">Crear salida</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialog_historial let-data let-ref="dialogRef">
+  <nb-card [nbSpinner]="viajeros_loading" nbSpinnerStatus="primary">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">DNI</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Asistio</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let viajero of viajeros | orderBy: 'nombre' : true">
+            <td scope="row">{{ viajero.dni }}</td>
+    
+            <td>{{ viajero.nombre_completo }}</td>
+    
+            <td>
+              <nb-icon *ngIf="viajero.checked" status="success" icon="checkmark-circle-2-outline"></nb-icon>
+              <nb-icon *ngIf="!viajero.checked" status="danger" icon="close-circle-outline"></nb-icon>      
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </nb-card>
+</ng-template>
+
+<nb-card *ngIf="view === 'panel'">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Viaje</th>
+        <th scope="col">Nro. salidas</th>
+        <th scope="col">Proxima salida</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items | orderBy: 'nro_salidas' : true">
+        <td scope="row">{{ item.nombre }}</td>
+
+        <td><a (click)="ver_historial (item)" style="cursor: pointer; color: blue">{{ item.nro_salidas }}</a></td>
+
+        <td>
+          <div *ngIf="item.estado <= 1">
+            {{ getDateFormat (item.ultimo_viaje_fecha_salida) }}
+          </div>
+
+          <div *ngIf="item.estado > 1">
+            --
+          </div>      
+        </td>
+
+        <td>
+          <div *ngIf="item.estado > 1">
+            <button nbButton status="success" size="tiny" (click)="agregar_salida (item, dialog)">Registrar salida</button>
+          </div>
+
+          <div *ngIf="item.estado <= 1">
+            {{ item.ultimo_viaje_nro_incritos }} de {{ item.ultimo_viaje_cupos }} inscritos <a (click)="checklist (item)" style="cursor: pointer; color: blue">Ver</a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</nb-card>
+
+<nb-card *ngIf="view === 'historial'">
+  <nb-card-header>
+    <div class="row">
+      <div class="col-3">
+        <button ghost nbButton (click)="ir_vista ('panel')">< Regresar</button>
+      </div>
+      <div class="col-9">
+        Historial de salidas: {{ item_selected.nombre }}
+      </div>
+    </div>
+  </nb-card-header>
+  <table class="table" [nbSpinner]="is_loading" nbSpinnerStatus="primary">
+    <thead>
+      <tr>
+        <th scope="col">Salidas</th>
+        <th scope="col">Cupos</th>
+        <th scope="col">Nro° viajeros</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of historial | orderBy: 'fecha_salida' : true">
+        <td>{{ getDateFormat (item.fecha_salida) }}</td>
+        <td>{{ item.cupos }}</td>
+        <td>{{ item.nro_inscritos }}</td>
+        <td><button nbButton size="tiny" (click)="ver_pasajeros (item, dialog_historial)">Ver viajeros</button></td>
+      </tr>
+    </tbody>
+  </table>
+</nb-card>

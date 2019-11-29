@@ -1,0 +1,23 @@
+{
+  "projects": {
+    "default": "dirceturcuscoapp"
+  },
+  "targets": {
+    "dirceturcuscoapp": {
+      "hosting": {
+        "admi": [
+          "admi-dirceturcuscoapp"
+        ],
+        "web": [
+          "dirceturcuscoapp"
+        ],
+        "api": [
+          "api-dirceturcuscoapp"
+        ],
+        "web_edit": [
+          "web-edit-dirceturcuscoapp"
+        ]
+      }
+    }
+  }
+}

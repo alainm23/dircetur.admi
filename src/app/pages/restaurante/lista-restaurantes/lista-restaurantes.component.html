@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-4">
+      <nb-card>
+        <nb-card-header>
+          
+        </nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="form">
+            <div class="form-group">
+              <label for="provincia" class="label">Provincia:</label>
+              <nb-select formControlName="provincia" fullWidth placeholder="Provincia" id="provincia" (selectedChange)="provinciaChanged ($event)">
+                <nb-option *ngFor="let item of provincias" [value]="item">
+                  {{ item.nombre }}
+                </nb-option>
+              </nb-select>
+            </div>
+  
+            <div class="form-group">
+              <label for="distrito" class="label">Distrito:</label>
+              <nb-select formControlName="distrito" fullWidth placeholder="Distrito" id="distrito"  [disabled]="esta_distritos_cargando">
+                <nb-option *ngFor="let item of distritos" [value]="item">
+                  {{ item.nombre }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </form>
+  
+          <div class="row">
+            <div class="col">
+              <button nbButton fullWidth status="primary" [disabled]="!form.valid" (click)="submit ()">Buscar</button>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  
+    <div class="col-8">
+      <nb-card>
+        <nb-card-header>
+          Resultado de busqueda
+        </nb-card-header>
+        <nb-list>
+          <nb-list-item *ngFor="let item of items">
+            <div class="row">
+              <div class="col-10">
+                <nb-user [name]="item.nombre_comercial" [title]="getData (item)">
+                </nb-user>
+              </div>
+  
+              <div class="col-2">
+                <button nbButton size="tiny" fullWidth status="danger" (click)="detalle (item)">Ver</button>
+              </div>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-card>
+    </div>
+  </div>
